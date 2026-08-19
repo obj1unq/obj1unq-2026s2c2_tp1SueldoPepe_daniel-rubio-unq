@@ -94,11 +94,11 @@ object moria{
 		bonoDeResultado = _bonoDeResultado
 	}
 	
-	method sueldo() = self.sueldoNetoEspecial() + bonoDeResultado.calcularBono(self)
+	method sueldo() = self.sueldoNetoRecibido() + bonoDeResultado.calcularBono(self)
 	
 	method sueldoNetoEspecial() = categoria.sueldoNeto() * 1.3
 	
-	method sueldoNetoRecibido() = categoria.sueldoNeto()
+	method sueldoNetoRecibido() = categoria.sueldoNeto() * 1.3
 }
 
 //nuevas categorias
@@ -107,11 +107,7 @@ object vendedor{
 	var tuvoMuchasVentas = false
 	
 	method sueldoNeto(){
-		return if(tuvoMuchasVentas){
-			sueldoNeto * 1.25
-		}else{
-			sueldoNeto
-		}
+		return sueldoNeto *if(tuvoMuchasVentas){ 1.25 }else{sueldoNeto}
 	}
 	
 	method activarAumentoPorMuchasVentas(){
