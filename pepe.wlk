@@ -1,10 +1,9 @@
+//PRIMERA PARTE:
 object pepe {
-
-
 	var categoria = gerente
 	var bonoDeResultado = bonoResultadoNulo
 	var bonoDePresentismo = bonoPresentismoNulo
-	var diasFaltado = 0
+	var diasFaltados = 0
 	
 	method categoria () = categoria
 	method categoria (_categoria){
@@ -20,27 +19,30 @@ object pepe {
 		bonoDePresentismo = _bonoDePresentismo
 	}
 	
-	method diasFaltado() = diasFaltado
-	method diasFaltado(_diasFaltado){
-		diasFaltado = _diasFaltado
+	method diasFaltados() = diasFaltados
+	method diasFaltados(_diasFaltados){
+		diasFaltados = _diasFaltados
 	}
 	
 	method sueldo() = 
 		categoria.sueldoNeto() + 
 		bonoDeResultado.calcularBono(categoria.sueldoNeto()) + 
-		bonoDePresentismo.calcularBono(categoria.sueldoNeto(), diasFaltado)
+		bonoDePresentismo.calcularBono(categoria.sueldoNeto(), diasFaltados)
+		
+	method sueldoNetoRecibido() = categoria.sueldoNeto()
 }	
 
 object cadete{
 	const sueldoNeto = 20000
+	
 	method sueldoNeto() = sueldoNeto
-
 }
+
 object gerente{
 	const sueldoNeto = 15000
+	
 	method sueldoNeto() = sueldoNeto
 }
-
 
 object bonoResultadoNulo{
 	method calcularBono(sueldoNeto) = 0
@@ -54,17 +56,17 @@ object bonoResultadoPorcentaje{
 
 
 object bonoPresentismoAjuste{
-	method calcularBono(sueldoNeto, diasFaltado) = if(diasFaltado == 0){100}else{0}
+	method calcularBono(sueldoNeto, diasFaltados) = if(diasFaltados == 0){100}else{0}
 }
 object bonoPresentismoDemagogico{
-	method calcularBono(sueldoNeto, diasFaltado) = if(sueldoNeto < 18000){500}else{300}
+	method calcularBono(sueldoNeto, diasFaltados) = if(sueldoNeto < 18000){500}else{300}
 }
 object bonoPresentismoNormal{
-	method calcularBono(sueldoNeto, diasFaltado){
-		return if(diasFaltado == 0){
+	method calcularBono(sueldoNeto, diasFaltados){
+		return if(diasFaltados == 0){
 					2000
 				}else{
-					if(diasFaltado == 1){
+					if(diasFaltados == 1){
 						1000
 					}else{
 						0
@@ -73,5 +75,98 @@ object bonoPresentismoNormal{
 	}
 }
 object bonoPresentismoNulo{
-	method calcularBono(sueldoNeto, diasFaltado) = 0
+	method calcularBono(sueldoNeto, diasFaltados) = 0
+}
+
+//SEGUNDA PARTE:
+
+object moria{
+	var categoria = gerente
+	var bonoDeResultado = bonoResultadoNulo
+	
+	method categoria () = categoria
+	method categoria (_categoria){
+		categoria = _categoria
+	}
+	
+	method bonoDeResultado () = bonoDeResultado
+	method bonoDeResultado(_bonoDeResultado){
+		bonoDeResultado = _bonoDeResultado
+	}
+	
+	method sueldo() = self.sueldoNetoEspecial() + bonoDeResultado.calcularBono(categoria.sueldoNeto())
+	
+	method sueldoNetoEspecial() = categoria.sueldoNeto() * 1.3
+	
+	method sueldoNetoRecibido() = categoria.sueldoNeto()
+}
+
+//nuevas categorias
+object vendedor{
+	const sueldoNeto = 16000
+	var tuvoMuchasVentas = false
+	
+	method sueldoNeto(){
+		return if(tuvoMuchasVentas){
+			sueldoNeto * 1.25
+		}else{
+			sueldoNeto
+		}
+	}
+	
+	method activarAumentoPorMuchasVentas(){
+		tuvoMuchasVentas = true
+	}
+	method desactivarAumentoPorMuchasVentas(){
+		tuvoMuchasVentas = false
+	}
+}
+
+object medioTiempo{
+    var categoriaBase = gerente
+
+
+	method categoriaBase(_categoriaBase){
+        categoriaBase = _categoriaBase
+
+	
+	}
+
+    method sueldoNeto() {
+        return categoriaBase.sueldoNeto() / 2
+      
+    }
+}
+
+//nuevas personas
+object roque{
+	const sueldoNeto = 28000
+	var bonoDeResultado = bonoResultadoNulo
+
+	method bonoDeResultado () = bonoDeResultado
+	method bonoDeResultado(_bonoDeResultado){
+		bonoDeResultado = _bonoDeResultado
+	}
+	
+	method sueldo() = sueldoNeto + bonoDeResultado.calcularBono(sueldoNeto) + self.cantidadDePesosFijos()
+	
+	method cantidadDePesosFijos() = 9000
+	
+	method sueldoNetoRecibido() = sueldoNeto
+}
+
+object ernesto{
+	const diasFaltados = 0 
+	var bonoDePresentismo = bonoPresentismoNulo
+	var compañero = pepe
+	
+	method bonoDePresentismo(_bonoDePresentismo){
+		bonoDePresentismo = _bonoDePresentismo
+	}
+
+	method compañero(_compañero){
+		compañero = _compañero
+	}
+	
+	method sueldo() = compañero.sueldoNetoRecibido() + bonoDePresentismo.calcularBono(compañero.sueldoNetoRecibido(), diasFaltados)
 }
