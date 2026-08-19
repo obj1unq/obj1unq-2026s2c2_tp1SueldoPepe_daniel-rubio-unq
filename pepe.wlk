@@ -26,8 +26,8 @@ object pepe {
 	
 	method sueldo() = 
 		categoria.sueldoNeto() + 
-		bonoDeResultado.calcularBono(categoria.sueldoNeto()) + 
-		bonoDePresentismo.calcularBono(categoria.sueldoNeto(), diasFaltados)
+		bonoDeResultado.calcularBono(self) + 
+		bonoDePresentismo.calcularBono(self)
 		
 	method sueldoNetoRecibido() = categoria.sueldoNeto()
 }	
@@ -51,22 +51,22 @@ object bonoResultadoMontoFijo{
 	method calcularBono(sueldoNeto) = 800
 }
 object bonoResultadoPorcentaje{
-	method calcularBono(sueldoNeto) = sueldoNeto * 0.1
+	method calcularBono(empleado) = empleado.sueldoNetoRecibido() * 0.1
 }
 
 
 object bonoPresentismoAjuste{
-	method calcularBono(sueldoNeto, diasFaltados) = if(diasFaltados == 0){100}else{0}
+	method calcularBono(empleado) = if(empleado.diasFaltados() == 0){100}else{0}
 }
 object bonoPresentismoDemagogico{
-	method calcularBono(sueldoNeto, diasFaltados) = if(sueldoNeto < 18000){500}else{300}
+	method calcularBono(empleado) = if(empleado.sueldoNetoRecibido() < 18000){500}else{300}
 }
 object bonoPresentismoNormal{
-	method calcularBono(sueldoNeto, diasFaltados){
-		return if(diasFaltados == 0){
+	method calcularBono(empleado){
+		return if(empleado.diasFaltados() == 0){
 					2000
 				}else{
-					if(diasFaltados == 1){
+					if(empleado.diasFaltados() == 1){
 						1000
 					}else{
 						0
@@ -75,7 +75,7 @@ object bonoPresentismoNormal{
 	}
 }
 object bonoPresentismoNulo{
-	method calcularBono(sueldoNeto, diasFaltados) = 0
+	method calcularBono(empleado) = 0
 }
 
 //SEGUNDA PARTE:
@@ -94,7 +94,7 @@ object moria{
 		bonoDeResultado = _bonoDeResultado
 	}
 	
-	method sueldo() = self.sueldoNetoEspecial() + bonoDeResultado.calcularBono(categoria.sueldoNeto())
+	method sueldo() = self.sueldoNetoEspecial() + bonoDeResultado.calcularBono(self)
 	
 	method sueldoNetoEspecial() = categoria.sueldoNeto() * 1.3
 	
@@ -148,7 +148,7 @@ object roque{
 		bonoDeResultado = _bonoDeResultado
 	}
 	
-	method sueldo() = sueldoNeto + bonoDeResultado.calcularBono(sueldoNeto) + self.cantidadDePesosFijos()
+	method sueldo() = sueldoNeto + bonoDeResultado.calcularBono(self) + self.cantidadDePesosFijos()
 	
 	method cantidadDePesosFijos() = 9000
 	
@@ -164,9 +164,12 @@ object ernesto{
 		bonoDePresentismo = _bonoDePresentismo
 	}
 
+	method diasFaltados() {
+		return diasFaltados
+}
 	method compañero(_compañero){
 		compañero = _compañero
 	}
 	
-	method sueldo() = compañero.sueldoNetoRecibido() + bonoDePresentismo.calcularBono(compañero.sueldoNetoRecibido(), diasFaltados)
+	method sueldo() = compañero.sueldoNetoRecibido() + bonoDePresentismo.calcularBono(self)
 }

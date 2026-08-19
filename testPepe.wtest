@@ -52,6 +52,7 @@ test "Caso de prueba 1 del enunciado de la segunda parte de Pepe"{
 	//- Pepe tiene categoría medio tiempo (o sea, es cadete y trabaja medio tiempo), tiene bono por 
 	//resultados de porcentaje, y bono por presentismo demagógico. Hacer que falte una vez.
 	medioTiempo.categoriaBase(cadete)
+	pepe.categoria(medioTiempo)
 	pepe.bonoDeResultado(bonoResultadoPorcentaje)
 	pepe.bonoDePresentismo(bonoPresentismoDemagogico)
 	pepe.diasFaltados(1)
