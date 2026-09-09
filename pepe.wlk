@@ -62,7 +62,8 @@ object bonoPresentismoDemagogico{
 	method calcularBono(empleado) = if(empleado.sueldoNetoRecibido() < 18000){500}else{300}
 }
 object bonoPresentismoNormal{
-	method calcularBono(empleado){
+
+/*	method calcularBono(empleado){
 		return if(empleado.diasFaltados() == 0){
 					2000
 				}else{
@@ -72,7 +73,13 @@ object bonoPresentismoNormal{
 						0
 					}
 				}
-	}
+	}*/
+
+method calcularBono(empleado){
+
+	return (2000 - 1000 * empleado.diasFaltados()).max(0)	
+} 
+	
 }
 object bonoPresentismoNulo{
 	method calcularBono(empleado) = 0
@@ -96,7 +103,6 @@ object moria{
 	
 	method sueldo() = self.sueldoNetoRecibido() + bonoDeResultado.calcularBono(self)
 	
-	method sueldoNetoEspecial() = categoria.sueldoNeto() * 1.3
 	
 	method sueldoNetoRecibido() = categoria.sueldoNeto() * 1.3
 }
